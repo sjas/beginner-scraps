@@ -3,6 +3,8 @@ Scraps of code for the GitHub & Python beginner that I am :-)
 
 Entries below in reverse chronological order:
 
+-2017-03-17: Added an old script that I found in my archives that truly is a beginner scrap :-) It's a PowerShell script to log into SSH devices and issue a command, with the intended use case of logging into a bunch of Cisco equipment and issuing "show run" and saving the output to separate files for configuration backup.
+
 -2017-01-19: Created an iteration of the last script that attempts to log into each pingable device to grab its configured hostname to see how it compares to the configured DNS A-record
 
 -2017-01-13: Created my second script based off my first one. The script pings a list of IPs, uses nslookup to see if they have a hostname associated with them, and writes the results to a file. The list of IPs are generated programmatically instead of being entered in entirely manually, with room for a few outliers to be added manually. The goal of this script is to see if a device is reachable, and to see if the DNS entry is what it should be. Putting this script together gave me a bunch of ideas for other things :-)
