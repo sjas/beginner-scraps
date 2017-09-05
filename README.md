@@ -3,6 +3,8 @@ Scraps of code for the GitHub & Python beginner that I am :-)
 
 Entries below in reverse chronological order:
 
+-2017-08-09: First attempt with Ansible to push out configs to Cisco routers
+
 -2017-03-17: Added an old script that I found in my archives that truly is a beginner scrap :-) It's a PowerShell script to log into SSH devices and issue a command, with the intended use case of logging into a bunch of Cisco equipment and issuing "show run" and saving the output to separate files for configuration backup.
 
 -2017-01-19: Created an iteration of the last script that attempts to log into each pingable device to grab its configured hostname to see how it compares to the configured DNS A-record
