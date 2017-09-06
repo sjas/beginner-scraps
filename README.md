@@ -3,6 +3,8 @@ Scraps of code for the GitHub & Python beginner that I am :-)
 
 Entries below in reverse chronological order:
 
+-2017-09-06: Spent a couple of days attempting to work in Python3. I'm sure I got some syntax wrong. I wrote a script that uses SNMP to poll a switch, determine if it's a Cisco 48-port Gigabit, 48-port FE, or 24-port FE (that's what I have in my environment right now), or none of those. It then polls for the system uptime, and the timer for the last interface state change is subtracted. If the interface has been down for longer than 14 days, and doesn't have a description set, it is available for re-use and is displayed in the output. I wrote this script because people kept asking me which ports were available on which switches, and while I had a switch port mapping tool to handle this, I found running this script to gather the specific information I was looking for was much faster. This script definitely reveals the n00b I am -- I know this can be modularized with functions and features, I just haven't got there yet.
+
 -2017-08-09: First attempt with Ansible to push out configs to Cisco routers
 
 -2017-03-17: Added an old script that I found in my archives that truly is a beginner scrap :-) It's a PowerShell script to log into SSH devices and issue a command, with the intended use case of logging into a bunch of Cisco equipment and issuing "show run" and saving the output to separate files for configuration backup.
