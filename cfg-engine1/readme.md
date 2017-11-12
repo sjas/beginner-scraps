@@ -8,12 +8,13 @@ my head in a way that attempts to keep things interesting by inserting
 randomness into the tasks (such as different interfaces, usernames and
 passwords) with each generation.
 
-Currently, the script 
-is assembled in three parts:
+Currently, the script is assembled in three parts:
 
 -start.py holds the main logic
+
 -randomvar.py holds the random variables and the logic to replace the 
   placeholders in tasks.py
+
 -tasks.py holds the tasks and solutions in dictionary format
 
 The tasks.py file is one large dictionary that contains tasks and solutions 
