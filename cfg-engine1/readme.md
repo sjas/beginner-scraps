@@ -1,7 +1,8 @@
-This is the framework for a study tool I am creating. The premise is similar
-to how flash cards work, except monotony is reduced by way of random
-variable replacement within the tasks. The Q&A format is generic enough
-that this script can be used for a wide range of quiz-type applications.
+This is the framework for a study tool I am creating written in Python3. 
+The premise is similar to how flash cards work, except monotony is reduced 
+by way of random variable replacement within the tasks. The Q&A format 
+is generic enough that this script can be used for a wide range of 
+quiz-type applications.
 
 I created this script as a method to drill Cisco IOS configurations into
 my head in a way that attempts to keep things interesting by inserting
