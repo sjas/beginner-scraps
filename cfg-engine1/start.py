@@ -41,8 +41,8 @@ tfile.write(gentime)
 afile.write(gentime)
 
 for task_number in tasklist:
-#    print(f' -task_number: {task_number}')  # e.g. 3,4,2,7,1
-#    print(f' -task: {task}')                # e.g. 1,2,3,4,5
+#    print(f' -task_number: {task_number}')  # debug, e.g. 3,4,2,7,1
+#    print(f' -task: {task}')                # debug, e.g. 1,2,3,4,5
 
     # Create a new temp list out of the specific list element passed in
     t1 = tlist[task_number - 1]
