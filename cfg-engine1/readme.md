@@ -38,6 +38,6 @@ be done was well (like input validation, and providing the solutions while
 the script is still running -- this is something I may try to work on in a
 future version).
 
-Additionally, I have not provided with this my own variables and tasks/solutions
-(that may come later, I'm not sure). But instead, I have provided the framework
-to add/create your own.
+Additionally, I have provided only a few of my own variables and tasks/solutions
+for example purposes. I may include more later, I'm not sure yet. However, 
+this can be used as a framework to add/create your own.
