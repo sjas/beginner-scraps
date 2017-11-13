@@ -7,7 +7,7 @@ Variables and meanings used inside the strings in this file:
 These variables get passed to randomvar.py and are replaced with actual values.
 
 These are just for quick easy personal reference, you should change these to whatever
- is appropraite for you.
+ is appropriate for you.
  
 SINT(1 - 4) = serial interface
 EINT(1 - 8) = ethernet interface
