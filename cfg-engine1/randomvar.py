@@ -37,6 +37,7 @@ def random_replace(task,answer):
     rndhost9 = rand_host9()
     rndhost10 = rand_host10()
     # Maybe I went a little overboard on hostnames? :-) 10x50
+    rndpercent = random.randint(0,100)
 
     # This is where the placeholder from the task/answer is actually replaced
     #  with a real value
@@ -64,6 +65,8 @@ def random_replace(task,answer):
     task = task.replace('HOSTNAME8', rndhost8)
     task = task.replace('HOSTNAME9', rndhost9)
     task = task.replace('HOSTNAME10', rndhost10)
+    task = task.replace('PERCENT', str(rndpercent))
+    task = task.replace('REVPCNT', str(100 - rndpercent))
 
     answer = answer.replace('SINT1', rndser1)
     answer = answer.replace('SINT2', rndser2)
@@ -89,6 +92,9 @@ def random_replace(task,answer):
     answer = answer.replace('HOSTNAME8', rndhost8)
     answer = answer.replace('HOSTNAME9', rndhost9)
     answer = answer.replace('HOSTNAME10', rndhost10)
+    answer = answer.replace('PERCENT', str(rndpercent))
+    answer = answer.replace('REVPCNT', str(100 - rndpercent))
+    
     # I'm sure there's a better way to do this, but oh well
 
     #print(task,answer)  #debug
