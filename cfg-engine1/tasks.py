@@ -72,6 +72,15 @@ interface SINT1
  ppp chap hostname rtr-HOSTNAME1
 ''',
 #
-
+'''
+Configure the router to drop the PPP session on the SINT1 interface if more
+than PERCENT percent of the traffic is dropped.
+''':
+'''
+interface SINT1
+ encapsulation ppp
+ ppp quality REVPCNT
+ ''',
+#
 
 }
