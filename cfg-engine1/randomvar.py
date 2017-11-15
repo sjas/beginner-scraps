@@ -143,9 +143,9 @@ def random_replace(task,answer):
 
     # Place the random unicast IP addresses into a random /8 - /30
     rndnet1 = IPNetwork(rndip1 + '/' + str(random.randint(8,30)))
-    rndnet2 = IPNetwork(rndip1 + '/' + str(random.randint(8,30)))
-    rndnet3 = IPNetwork(rndip1 + '/' + str(random.randint(8,30)))
-    rndnet4 = IPNetwork(rndip1 + '/' + str(random.randint(8,30)))
+    rndnet2 = IPNetwork(rndip2 + '/' + str(random.randint(8,30)))
+    rndnet3 = IPNetwork(rndip3 + '/' + str(random.randint(8,30)))
+    rndnet4 = IPNetwork(rndip4 + '/' + str(random.randint(8,30)))
 
     # Choose a different random IP address and prefix if = net/bcast address
     while rndnet1.ip is rndnet1.network or rndnet1.ip is rndnet1.broadcast:
