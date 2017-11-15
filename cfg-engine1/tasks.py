@@ -9,23 +9,26 @@ These variables get passed to randomvar.py and are replaced with actual values.
 These are just for quick easy personal reference, you should change these to whatever
  is appropriate for you.
 
-SINT(1 - 4) = serial interface
-EINT(1 - 4) = ethernet interface
+SINT(1-4) = serial interface
+EINT(1-4) = ethernet interface
 USERNAME
 PASSWORD
-NAME(1 - 4) = hostnames, group names, etc.
-PERCENT / REVPCNT (100 - PERCENT)
-RNDIP(1-4) = single standalone random unicast IP, no mask
+NAME(1-4) = hostnames, group names, etc.
+PERCENT / REVPCNT (100-PERCENT)
+
+RNDNET(1-4)IP    = random IP
+RNDNET(1-4)PFX   = prefix length (the x in /x)
+RNDNET(1-4)CIDR  = x.x.x.x/x
+RNDNET(1-4)NET   = network address
+RNDNET(1-4)BC    = bcast address
+RNDNET(1-4)MSK   = subnet mask
+RNDNET(1-4)WC    = wildcard mask
+
 RNDIPRANGE(1-4) = standalone unicast IP range with /24   x.x.x.x - y
   RNDIPRANGEst(1-4) = starting address from that range   x.x.x.x
   RNDIPRANGEen(1-4) = ending address from that range     x.x.x.y
-RNDPFX(1-4)C = random /8 - /30 CIDR
-RNDPFX(1-4)M = corresponding subnet mask
-RNDPFX(1-4)W = corresponding wildcard mask / broadcast address
-RND100x1 = random 1 - 100
-RND100x2 = random 1 - 100
-RND100x3 = random 1 - 100
-RND100x4 = random 1 - 100
+
+RND100x(1-4) = random 1 - 100
 RND1K = random 1 - 1000
 RND4094 = random 1 - 4094, excluding 1002-1005
 RND24 = random between 2 and 4
@@ -35,9 +38,6 @@ Key/Value pairs below are separated with a #. This is just for visual clarity.
 '''
 
 tasks = {
-
-
-
 
 
 '''
@@ -145,12 +145,12 @@ interface SINT1
  #
 '''
 Router 'rtr-NAME1' is configured for PPP on its SINT1 interface.
-Configure the router to automatically assign IP address 'RNDIP1'
+Configure the router to automatically assign IP address 'RNDNET1IP'
 to the connected device.
 ''':
 '''
 interface SINT1
- peer default ip address RNDIP1
+ peer default ip address RNDNET1IP
 ''',
 #
 '''
@@ -198,12 +198,12 @@ interface SINT1
 #
 '''
 Configure the router to use PPP to bundle together interfaces SINT1 and SINT2
-using bundle number 'RND100x1'. Configure the bundle with IP 'RNDIP1'
-and the prefix '/RNDPFX1C'.
+using bundle number 'RND100x1'. Configure the bundle with IP 'RNDNET1IP' with
+the '/RNDNET1PFX' prefix.
 ''':
 '''
 interface multilink RND100x1
- ip address RNDIP1 RNDPFX1M
+ ip address RNDNET1IP RNDNET1MSK
  encapsulation ppp
  ppp multilink
  ppp multilink group RND100x1
@@ -237,7 +237,7 @@ Configure rtr-NAME1 as a PPPoE server.
   pool 'NAME2' in the range of 'RNDIPRANGE1'.
 -Configure Virtual Template RND100x1 to use interface Loopback RND100x2
   for its IP address source.
--Loopback RND100x2's IP address is 'RNDIP1' with a /RNDPFX1C mask.
+-Loopback RND100x2's IP address is 'RNDNET1IP' with a /RNDNET1PFX mask.
 -Account for PPPoE overhead on the Virtual Template interface.
 -Assign the EINT1 interface to the 'NAME3' PPPoE server.
 ''':
@@ -245,7 +245,7 @@ Configure rtr-NAME1 as a PPPoE server.
 ip local pool NAME2 RNDIPRANGEst1 RNDIPRANGEen1
 
 interface loopback RND100x2
- ip address RNDIP1 RNDPFX1M
+ ip address RNDNET1IP RNDNET1MSK
 
 interface virtual-template RND100x1
  ip unnumbered loopback RND100x2
@@ -278,5 +278,6 @@ interface EINT1
  pppoe-client dial-pool-number 1
 ''',
 #
+
 
 }
