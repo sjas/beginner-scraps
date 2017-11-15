@@ -80,4 +80,3 @@ tfile.close()
 afile.close()
 
 print(f'\n{tnum} tasks have been written to {tfilevar} and {afilevar}.\n')
- 
