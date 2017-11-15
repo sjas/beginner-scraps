@@ -39,6 +39,12 @@ be done was well (like input validation, and providing the solutions while
 the script is still running -- this is something I may try to work on in a
 future version).
 
-Additionally, I have provided only a few of my own variables and tasks/solutions
+Additionally, I have provided a few of my own variables and tasks/solutions
 for example purposes. I may include more later, I'm not sure yet. However, 
 this can be used as a framework to add/create your own.
+
+==============================
+Updates
+==============================
+
+-11/15/2017: I refactored the code removing a couple of my own functions to work with IP addresses and replaced them with the 'netaddr' library. It's a much cleaner and easier way of working with IP addresses than my little hack :-)
