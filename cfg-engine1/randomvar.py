@@ -1,8 +1,54 @@
 import random
+from netaddr import *
+
+# This file requires the netaddr library  pip3 install netaddr
 
 ### This file contains both the real values to place within the variables,
 ###  as well as the function to actually replace the variables within the
 ###  tasks that are passed to the function.
+
+
+'''
+netaddr primer:
+
+rndip1 = rand_ip()   # my function to generate a random unicast IP (1 - 223, -127)
+
+rndnet1 = IPNetwork(rndip1 + '/' + str(random.randint(8,30)))
+rndnet1 is rndnet1.network     # is it the network address?
+rndnet1 is rndnet1.broadcast   # is it the broadcast address?
+
+rndnet1.ip                # ip address without CIDR notation
+str(rndnet1)              # ip address with CIDR notation
+rndnet1.network           # network address
+rndnet1.broadcast         # broadcast address
+rndnet1.netmask           # subnet mask
+rndnet1.hostmask          # wildcard
+rndnet1.prefixlen = 20    # change / assign different prefix length later
+rndnet1.ip.bits()         # binary octets of IP address
+rndnet1.network.bits()    # binary octets of network address
+rndnet1.netmask.bits()    # binary octets of subnet mask
+rndnet1.broadcast.bits()  # binary octets of broadcast address
+
+list1 = list(rndnet1)     # creates a list of every IPAddress('x.x.x.x') in the range
+len(list1)                # how many IPs are in the range
+str(list1[1])             # access individual addresses in the range
+str(random.choice(list1)) # random IP from range, includes net/bcast
+
+for ip in rndnet1:        # print all IPs in range
+    print(ip)
+
+for ip in rndnet1.iter_hosts():  # print all host IPs in range (ex net/bcast)
+    print(ip)
+
+range1 = IPRange('start-ip', 'end-ip')  # creates arbitrary range
+
+for ip in range1:   # print all IPs in arbitrary range
+    print(ip)
+
+# You can also compare IPAddress and IPNetwork in == < > <= >- != manner
+
+'''
+
 
 # takes task presented from tasks.py (via start.py) and puts actual values
 def random_replace(task,answer):
@@ -56,7 +102,7 @@ def random_replace(task,answer):
     rndname3 = rand_name()
     rndname4 = rand_name()
 
-    # Make sure each is unique
+    # Make sure each name is unique
     while rndname1 == rndname2 or rndname1 == rndname3 or rndname1 == rndname4:
         rndname1 = rand_name()
     while rndname2 == rndname1 or rndname2 == rndname3 or rndname2 == rndname4:
@@ -88,51 +134,39 @@ def random_replace(task,answer):
     rnd4094 = rand_4094() # 1 - 4094 excluding 1002 - 1005
     rnd24 = rand_2_4()    # 2, 3 or 4
 
-    #  Random Prefix /8 - /30:  rndprefix[0],mask[1],binmask[2],wildcard[3],binwc[4]
-    #  Masks and wildcards are called before IP addresses so their Variables
-    #   are available for verification
-    rndpfx1 = rand_prefix()
-    rndpfx2 = rand_prefix()
-    rndpfx3 = rand_prefix()
-    rndpfx4 = rand_prefix()
 
-    rndip1 = rand_ip()           # returns single unicast IP address [0]
-    rndip2 = rand_ip()           # and binary version [1]
+    # Generate single random unicast IP addresses
+    rndip1 = rand_ip()
+    rndip2 = rand_ip()
     rndip3 = rand_ip()
     rndip4 = rand_ip()
 
-    rndiprange1 = rand_iprange()  # returns range, start ip, end ip
+    # Place the random unicast IP addresses into a random /8 - /30
+    rndnet1 = IPNetwork(rndip1 + '/' + str(random.randint(8,30)))
+    rndnet2 = IPNetwork(rndip1 + '/' + str(random.randint(8,30)))
+    rndnet3 = IPNetwork(rndip1 + '/' + str(random.randint(8,30)))
+    rndnet4 = IPNetwork(rndip1 + '/' + str(random.randint(8,30)))
+
+    # Choose a different random IP address and prefix if = net/bcast address
+    while rndnet1.ip is rndnet1.network or rndnet1.ip is rndnet1.broadcast:
+        rndip1 = rand_ip()
+        rndnet1 = IPNetwork(rndip1 + '/' + str(random.randint(8,30)))
+    while rndnet2.ip is rndnet2.network or rndnet2.ip is rndnet2.broadcast:
+        rndip2 = rand_ip()
+        rndnet2 = IPNetwork(rndip2 + '/' + str(random.randint(8,30)))
+    while rndnet3.ip is rndnet3.network or rndnet3.ip is rndnet3.broadcast:
+        rndip3 = rand_ip()
+        rndnet3 = IPNetwork(rndip3 + '/' + str(random.randint(8,30)))
+    while rndnet4.ip is rndnet4.network or rndnet4.ip is rndnet4.broadcast:
+        rndip4 = rand_ip()
+        rndnet4 = IPNetwork(rndip4 + '/' + str(random.randint(8,30)))
+
+    # This function's IPs are completely isolated and separate from the above
+    rndiprange1 = rand_iprange()  # returns /24 range, start ip, end ip
     rndiprange2 = rand_iprange()  #  as list elements 0,1,2
-    rndiprange3 = rand_iprange()
+    rndiprange3 = rand_iprange()  #  useful for small IP pools
     rndiprange4 = rand_iprange()
 
-    #Make sure IP address is not the subnet mask
-    while rndpfx1[2] == rndip1[1] or rndpfx1[2] == rndip2[1] or \
-          rndpfx1[2] == rndip3[1] or rndpfx1[2] == rndip4[1]:
-        rndpfx1 = rand_mask()
-    while rndpfx2[2] == rndip1[1] or rndpfx2[2] == rndip2[1] or \
-          rndpfx2[2] == rndip3[1] or rndpfx2[2] == rndip4[1]:
-        rndpfx2 = rand_mask()
-    while rndpfx3[2] == rndip1[1] or rndpfx3[2] == rndip2[1] or \
-          rndpfx3[2] == rndip3[1] or rndpfx3[2] == rndip4[1]:
-        rndpfx3 = rand_mask()
-    while rndpfx4[2] == rndip1[1] or rndpfx4[2] == rndip2[1] or \
-          rndpfx4[2] == rndip3[1] or rndpfx4[2] == rndip4[1]:
-        rndpfx4 = rand_mask()
-
-    #Make sure IP address is not the broadcast IP (checked against WC mask)
-    while rndpfx1[4] == rndip1[1] or rndpfx1[4] == rndip2[1] or \
-          rndpfx1[4] == rndip3[1] or rndpfx1[4] == rndip4[1]:
-        rndpfx1 = rand_mask()
-    while rndpfx2[4] == rndip1[1] or rndpfx2[4] == rndip2[1] or \
-          rndpfx2[4] == rndip3[1] or rndpfx2[4] == rndip4[1]:
-        rndpfx2 = rand_mask()
-    while rndpfx3[4] == rndip1[1] or rndpfx3[4] == rndip2[1] or \
-          rndpfx3[4] == rndip3[1] or rndpfx3[4] == rndip4[1]:
-        rndpfx3 = rand_mask()
-    while rndpfx4[4] == rndip1[1] or rndpfx4[4] == rndip2[1] or \
-          rndpfx4[4] == rndip3[1] or rndpfx4[4] == rndip4[1]:
-        rndpfx4 = rand_mask()
 
 
 
@@ -161,10 +195,39 @@ def random_replace(task,answer):
     task = task.replace('PERCENT', str(rndpercent))
     task = task.replace('REVPCNT', str(100 - rndpercent))
 
-    task = task.replace('RNDIP1', rndip1[0])
-    task = task.replace('RNDIP2', rndip2[0])
-    task = task.replace('RNDIP3', rndip3[0])
-    task = task.replace('RNDIP4', rndip4[0])
+
+    task = task.replace('RNDNET1IP', str(rndnet1.ip))        # IP
+    task = task.replace('RNDNET1PFX', str(rndnet1.prefixlen))# the x in /x
+    task = task.replace('RNDNET1CIDR', str(rndnet1))         # x.x.x.x/x
+    task = task.replace('RNDNET1NET', str(rndnet1.network))  # network address
+    task = task.replace('RNDNET1BC', str(rndnet1.broadcast)) # bcast address
+    task = task.replace('RNDNET1MSK', str(rndnet1.netmask))  # subnet mask
+    task = task.replace('RNDNET1WC', str(rndnet1.hostmask))  # wildcard mask
+
+    task = task.replace('RNDNET2IP', str(rndnet2.ip))        # IP
+    task = task.replace('RNDNET2PFX', str(rndnet2.prefixlen))# the x in /x
+    task = task.replace('RNDNET2CIDR', str(rndnet2))         # x.x.x.x/x
+    task = task.replace('RNDNET2NET', str(rndnet2.network))  # network address
+    task = task.replace('RNDNET2BC', str(rndnet2.broadcast)) # bcast address
+    task = task.replace('RNDNET2MSK', str(rndnet2.netmask))  # subnet mask
+    task = task.replace('RNDNET2WC', str(rndnet2.hostmask))  # wildcard mask
+
+    task = task.replace('RNDNET3IP', str(rndnet3.ip))        # IP
+    task = task.replace('RNDNET3PFX', str(rndnet3.prefixlen))# the x in /x
+    task = task.replace('RNDNET3CIDR', str(rndnet3))         # x.x.x.x/x
+    task = task.replace('RNDNET3NET', str(rndnet3.network))  # network address
+    task = task.replace('RNDNET3BC', str(rndnet3.broadcast)) # bcast address
+    task = task.replace('RNDNET3MSK', str(rndnet3.netmask))  # subnet mask
+    task = task.replace('RNDNET3WC', str(rndnet3.hostmask))  # wildcard mask
+
+    task = task.replace('RNDNET4IP', str(rndnet4.ip))        # IP
+    task = task.replace('RNDNET4PFX', str(rndnet4.prefixlen))# the x in /x
+    task = task.replace('RNDNET4CIDR', str(rndnet4))         # x.x.x.x/x
+    task = task.replace('RNDNET4NET', str(rndnet4.network))  # network address
+    task = task.replace('RNDNET4BC', str(rndnet4.broadcast)) # bcast address
+    task = task.replace('RNDNET4MSK', str(rndnet4.netmask))  # subnet mask
+    task = task.replace('RNDNET4WC', str(rndnet4.hostmask))  # wildcard mask
+
 
     task = task.replace('RNDIPRANGE1', rndiprange1[0])   #x.x.x.x - y
     task = task.replace('RNDIPRANGEst1', rndiprange1[1]) #x.x.x.x
@@ -178,19 +241,6 @@ def random_replace(task,answer):
     task = task.replace('RNDIPRANGE4', rndiprange4[0])
     task = task.replace('RNDIPRANGEst4', rndiprange4[1])
     task = task.replace('RNDIPRANGEen4', rndiprange4[2])
-
-    task = task.replace('RNDPFX1C', str(rndpfx1[0]))   # random /8 - /30 CIDR
-    task = task.replace('RNDPFX1M', rndpfx1[1])        # subnet mask
-    task = task.replace('RNDPFX1W', rndpfx1[3])        # wildcard mask / broadcast
-    task = task.replace('RNDPFX2C', str(rndpfx2[0]))
-    task = task.replace('RNDPFX2M', rndpfx2[1])
-    task = task.replace('RNDPFX2W', rndpfx2[3])
-    task = task.replace('RNDPFX3C', str(rndpfx3[0]))
-    task = task.replace('RNDPFX3M', rndpfx3[1])
-    task = task.replace('RNDPFX3W', rndpfx3[3])
-    task = task.replace('RNDPFX4C', str(rndpfx4[0]))
-    task = task.replace('RNDPFX4M', rndpfx4[1])
-    task = task.replace('RNDPFX4W', rndpfx4[3])
 
     task = task.replace('RND100x1', str(rnd100x1))
     task = task.replace('RND100x2', str(rnd100x2))
@@ -224,10 +274,39 @@ def random_replace(task,answer):
     answer = answer.replace('PERCENT', str(rndpercent))
     answer = answer.replace('REVPCNT', str(100 - rndpercent))
 
-    answer = answer.replace('RNDIP1', rndip1[0])
-    answer = answer.replace('RNDIP2', rndip2[0])
-    answer = answer.replace('RNDIP3', rndip3[0])
-    answer = answer.replace('RNDIP4', rndip4[0])
+
+    answer = answer.replace('RNDNET1IP', str(rndnet1.ip))        # IP
+    answer = answer.replace('RNDNET1PFX', str(rndnet1.prefixlen))# the x in /x
+    answer = answer.replace('RNDNET1CIDR', str(rndnet1))         # x.x.x.x/x
+    answer = answer.replace('RNDNET1NET', str(rndnet1.network))  # network address
+    answer = answer.replace('RNDNET1BC', str(rndnet1.broadcast)) # bcast address
+    answer = answer.replace('RNDNET1MSK', str(rndnet1.netmask))  # subnet mask
+    answer = answer.replace('RNDNET1WC', str(rndnet1.hostmask))  # wildcard mask
+
+    answer = answer.replace('RNDNET2IP', str(rndnet2.ip))        # IP
+    answer = answer.replace('RNDNET2PFX', str(rndnet2.prefixlen))# the x in /x
+    answer = answer.replace('RNDNET2CIDR', str(rndnet2))         # x.x.x.x/x
+    answer = answer.replace('RNDNET2NET', str(rndnet2.network))  # network address
+    answer = answer.replace('RNDNET2BC', str(rndnet2.broadcast)) # bcast address
+    answer = answer.replace('RNDNET2MSK', str(rndnet2.netmask))  # subnet mask
+    answer = answer.replace('RNDNET2WC', str(rndnet2.hostmask))  # wildcard mask
+
+    answer = answer.replace('RNDNET3IP', str(rndnet3.ip))        # IP
+    answer = answer.replace('RNDNET3PFX', str(rndnet3.prefixlen))# the x in /x
+    answer = answer.replace('RNDNET3CIDR', str(rndnet3))         # x.x.x.x/x
+    answer = answer.replace('RNDNET3NET', str(rndnet3.network))  # network address
+    answer = answer.replace('RNDNET3BC', str(rndnet3.broadcast)) # bcast address
+    answer = answer.replace('RNDNET3MSK', str(rndnet3.netmask))  # subnet mask
+    answer = answer.replace('RNDNET3WC', str(rndnet3.hostmask))  # wildcard mask
+
+    answer = answer.replace('RNDNET4IP', str(rndnet4.ip))        # IP
+    answer = answer.replace('RNDNET4PFX', str(rndnet4.prefixlen))# the x in /x
+    answer = answer.replace('RNDNET4CIDR', str(rndnet4))         # x.x.x.x/x
+    answer = answer.replace('RNDNET4NET', str(rndnet4.network))  # network address
+    answer = answer.replace('RNDNET4BC', str(rndnet4.broadcast)) # bcast address
+    answer = answer.replace('RNDNET4MSK', str(rndnet4.netmask))  # subnet mask
+    answer = answer.replace('RNDNET4WC', str(rndnet4.hostmask))  # wildcard mask
+
 
     answer = answer.replace('RNDIPRANGE1', rndiprange1[0])   #x.x.x.x - y
     answer = answer.replace('RNDIPRANGEst1', rndiprange1[1]) #x.x.x.x
@@ -242,18 +321,6 @@ def random_replace(task,answer):
     answer = answer.replace('RNDIPRANGEst4', rndiprange4[1])
     answer = answer.replace('RNDIPRANGEen4', rndiprange4[2])
 
-    answer = answer.replace('RNDPFX1C', str(rndpfx1[0]))   # random /8 - /30 CIDR
-    answer = answer.replace('RNDPFX1M', rndpfx1[1])        # subnet mask
-    answer = answer.replace('RNDPFX1W', rndpfx1[3])        # wildcard mask / broadcast
-    answer = answer.replace('RNDPFX2C', str(rndpfx2[0]))
-    answer = answer.replace('RNDPFX2M', rndpfx2[1])
-    answer = answer.replace('RNDPFX2W', rndpfx2[3])
-    answer = answer.replace('RNDPFX3C', str(rndpfx3[0]))
-    answer = answer.replace('RNDPFX3M', rndpfx3[1])
-    answer = answer.replace('RNDPFX3W', rndpfx3[3])
-    answer = answer.replace('RNDPFX4C', str(rndpfx4[0]))
-    answer = answer.replace('RNDPFX4M', rndpfx4[1])
-    answer = answer.replace('RNDPFX4W', rndpfx4[3])
 
     answer = answer.replace('RND100x1', str(rnd100x1))
     answer = answer.replace('RND100x2', str(rnd100x2))
@@ -274,12 +341,12 @@ def random_replace(task,answer):
 
 def rand_serial():
     rndser1 = random.choice(['s0/0','s0/1','s0/2','s0/3','s1/0','s1/1','s1/2','s1/3',
-                            's2/0','s2/1','s2/2','s2/3','s3/0','s3/1','s3/2','s3/3'])
+                             's2/0','s2/1','s2/2','s2/3','s3/0','s3/1','s3/2','s3/3'])
     return rndser1
 
 def rand_ethernet():
     rndeth1 = random.choice(['e0/0','e0/1','e0/2','e0/3','e1/0','e1/1','e1/2','e1/3',
-                            'e2/0','e2/1','e2/2','e2/3','e3/0','e3/1','e3/2','e3/3'])
+                             'e2/0','e2/1','e2/2','e2/3','e3/0','e3/1','e3/2','e3/3'])
     return rndeth1
 
 def rand_user():
@@ -407,16 +474,13 @@ def rand_ip():   # single random unicast IP address
     oct3 = random.randint(1,254)
     oct4 = random.randint(1,254)
 
-    while oct1 == 127:   # attempt to choose a different value if 127
+    while oct1 == 127:   # choose a different value if 127
         oct1 = random.randint(1,223)
 
-    rndip = str(oct1) + '.' + str(oct2) + '.' + str(oct3) +\
-       '.' + str(oct4)
+    rndip = str(oct1) + '.' + str(oct2) + '.' + str(oct3) + '.' + str(oct4)
 
-    rndipbin = str(bin(oct1)) + '.' + str(bin(oct2)) + '.' +\
-       str(bin(oct3)) + '.' + str(bin(oct4))
+    return rndip
 
-    return rndip,rndipbin
 
 def rand_iprange():   # single unicast IP range within /24
     oct1 = random.randint(1,223)
@@ -425,7 +489,7 @@ def rand_iprange():   # single unicast IP range within /24
     oct4 = random.randint(1,253)     #one less than max since it's a range
     endrange = random.randint(1,254)
 
-    while oct1 == 127:   # attempt to choose a different value if 127
+    while oct1 == 127:   # choose a different value if 127
         oct1 = random.randint(1,223)
 
     while endrange < oct4:  # make sure the end is greater than the beginning
@@ -442,127 +506,6 @@ def rand_iprange():   # single unicast IP range within /24
 
     return rndiprange,rangestart,rangeend
 
-
-def rand_prefix():  # /8 - /30
-    rndprefix = random.randint(8,30)
-
-    if rndprefix == 8:
-        mask = '255.0.0.0'
-        binmask = '11111111.00000000.00000000.00000000'
-        wildcard = '0.255.255.255'
-        binwc = '00000000.11111111.11111111.11111111'
-    elif rndprefix == 9:
-        mask = '255.128.0.0'
-        binmask = '11111111.10000000.00000000.00000000'
-        wildcard = '0.127.255.255'
-        binwc = '00000000.01111111.11111111.11111111'
-    elif rndprefix == 10:
-        mask = '255.192.0.0'
-        binmask = '11111111.11000000.00000000.00000000'
-        wildcard = '0.63.255.255'
-        binwc = '00000000.00111111.11111111.11111111'
-    elif rndprefix == 11:
-        mask = '255.224.0.0'
-        binmask = '11111111.11100000.00000000.00000000'
-        wildcard = '0.31.255.255'
-        binwc = '00000000.00011111.11111111.11111111'
-    elif rndprefix == 12:
-        mask = '255.240.0.0'
-        binmask = '11111111.11110000.00000000.00000000'
-        wildcard = '0.15.255.255'
-        binwc = '00000000.00001111.11111111.11111111'
-    elif rndprefix == 13:
-        mask = '255.248.0.0'
-        binmask = '11111111.11111000.00000000.00000000'
-        wildcard = '0.7.255.255'
-        binwc = '00000000.00000111.11111111.11111111'
-    elif rndprefix == 14:
-        mask = '255.252.0.0'
-        binmask = '11111111.11111100.00000000.00000000'
-        wildcard = '0.3.255.255'
-        binwc = '00000000.00000011.11111111.11111111'
-    elif rndprefix == 15:
-        mask = '255.254.0.0'
-        binmask = '11111111.11111110.00000000.00000000'
-        wildcard = '0.1.255.255'
-        binwc = '00000000.00000001.11111111.11111111'
-    elif rndprefix == 16:
-        mask = '255.255.0.0'
-        binmask = '11111111.11111111.00000000.00000000'
-        wildcard = '0.0.255.255'
-        binwc = '00000000.00000000.11111111.11111111'
-    elif rndprefix == 17:
-        mask = '255.255.128.0'
-        binmask = '11111111.11111111.10000000.00000000'
-        wildcard = '0.0.127.255'
-        binwc = '00000000.00000000.01111111.11111111'
-    elif rndprefix == 18:
-        mask = '255.255.192.0'
-        binmask = '11111111.11111111.11000000.00000000'
-        wildcard = '0.0.63.255'
-        binwc = '00000000.00000000.00111111.11111111'
-    elif rndprefix == 19:
-        mask = '255.255.224.0'
-        binmask = '11111111.11111111.11100000.00000000'
-        wildcard = '0.0.31.255'
-        binwc = '00000000.00000000.00011111.11111111'
-    elif rndprefix == 20:
-        mask = '255.255.240.0'
-        binmask = '11111111.11111111.11110000.00000000'
-        wildcard = '0.0.15.255'
-        binwc = '00000000.00000000.00001111.11111111'
-    elif rndprefix == 21:
-        mask = '255.255.248.0'
-        binmask = '11111111.11111111.11111000.00000000'
-        wildcard = '0.0.7.255'
-        binwc = '00000000.00000000.00000111.11111111'
-    elif rndprefix == 22:
-        mask = '255.255.252.0'
-        binmask = '11111111.11111111.11111100.00000000'
-        wildcard = '0.0.3.255'
-        binwc = '00000000.00000000.00000011.11111111'
-    elif rndprefix == 23:
-        mask = '255.255.254.0'
-        binmask = '11111111.11111111.11111110.00000000'
-        wildcard = '0.0.1.255'
-        binwc = '00000000.00000000.00000001.11111111'
-    elif rndprefix == 24:
-        mask = '255.255.255.0'
-        binmask = '11111111.11111111.11111111.00000000'
-        wildcard = '0.0.0.255'
-        binwc = '00000000.00000000.00000000.11111111'
-    elif rndprefix == 25:
-        mask = '255.255.255.128'
-        binmask = '11111111.11111111.11111111.10000000'
-        wildcard = '0.0.0.127'
-        binwc = '00000000.00000000.00000000.01111111'
-    elif rndprefix == 26:
-        mask = '255.255.255.192'
-        binmask = '11111111.11111111.11111111.11000000'
-        wildcard = '0.0.0.63'
-        binwc = '00000000.00000000.00000000.00111111'
-    elif rndprefix == 27:
-        mask = '255.255.255.224'
-        binmask = '11111111.11111111.11111111.11100000'
-        wildcard = '0.0.0.31'
-        binwc = '00000000.00000000.00000000.00011111'
-    elif rndprefix == 28:
-        mask = '255.255.255.240'
-        binmask = '11111111.11111111.11111111.11110000'
-        wildcard = '0.0.0.15'
-        binwc = '00000000.00000000.00000000.00001111'
-    elif rndprefix == 29:
-        mask = '255.255.255.248'
-        binmask = '11111111.11111111.11111111.11111000'
-        wildcard = '0.0.0.7'
-        binwc = '00000000.00000000.00000000.00000111'
-    else:
-        mask = '255.255.255.252'
-        binmask = '11111111.11111111.11111111.11111100'
-        wildcard = '0.0.0.3'
-        binwc = '00000000.00000000.00000000.00000011'
-
-    return rndprefix,mask,binmask,wildcard,binwc
 
 def rand_100():
     rnd100 = random.randint(1,100)
