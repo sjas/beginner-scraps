@@ -47,4 +47,6 @@ this can be used as a framework to add/create your own.
 Updates
 ==============================
 
+-12/13/2017: I changed some of the matching/replacing logic in randomvar.py to make things more efficient and reduce the number of lines of code. Additionally, I have included in the tasks.py file 79 example questions that utilize all of the defined variable replacements. All of the questions involve "link layer" Cisco IOS configurations (interfaces, STP, etc).
+
 -11/15/2017: I refactored the code removing a couple of my own functions to work with IP addresses and replaced them with the 'netaddr' library. It's a much cleaner and easier way of working with IP addresses than my little hack :-)
