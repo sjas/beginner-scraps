@@ -8,7 +8,7 @@ large as well, so I thought it would be best to put it into a separate file
 for clarity.
 '''
 
-import random
+from random import *
 from tasks import *      # tasks file where the tasks & solutions live
 from randomvar import *  # randomvar file where the task variables live
 from datetime import datetime
@@ -30,7 +30,7 @@ tnum = int(input(f'How many tasks (up to {total_tasks}) would you '\
                       'like generated?: '))
 
 # generate list of tnum tasks in random order from total number of tasks in pool
-tasklist = random.sample(range(1, total_tasks+1), tnum)
+tasklist = sample(range(1, total_tasks+1), tnum)
 
 # set counter for numerical task order used in upcoming for loop
 task = 1
