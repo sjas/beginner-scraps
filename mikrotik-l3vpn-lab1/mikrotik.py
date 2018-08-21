@@ -7,7 +7,7 @@ import time
 
 yaml_file = 'mikrotik.yml'
 jinja_template = 'mikrotik.j2'
-eve_ng = '192.168.196.22' # Hostname or IP address of EVE-NG host
+eve_ng = '1.2.3.4' # Hostname or IP address of EVE-NG host
 
 # Generate the configurations and send it to the devices
 def confgen(vars):
