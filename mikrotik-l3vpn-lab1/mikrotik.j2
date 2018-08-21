@@ -22,19 +22,19 @@
 {%- endif %}
 
 {%- if 'PE' in host %}
-/routing bgp instance set default as={{ bgp_asn }};
+/routing bgp instance set default as={{ bgp_asn }}
 {%- for vrf in vrfs %}
 /ip route vrf add routing-mark={{ vrf[0] }} interfaces={{ vrf[1] }} \
  route-distinguisher={{ vrf[2] }} export-route-targets={{ vrf[3] }} \
  import-route-targets={{ vrf[4] }}
-/routing bgp instance add name=ebgp router-id={{ router_id }} \
+/routing bgp instance add name={{ vrf[0] }} router-id={{ router_id }} \
  as={{ bgp_asn }} routing-table={{ vrf[0] }}
 /routing bgp instance vrf add instance=default routing-mark={{ vrf[0] }} \
  redistribute-connected=yes redistribute-other-bgp=yes
 {%- endfor %}
 {%- for peer in bgp_peers %}
 {%- if peer[2] %}
-/routing bgp peer add instance=ebgp remote-address={{ peer[1] }} remote-as={{ peer[0] }}
+/routing bgp peer add instance={{ peer[2] }} remote-address={{ peer[1] }} remote-as={{ peer[0] }}
 {%- endif %}
 {%- if not peer[2] %}
 /routing bgp peer add remote-address={{ peer[1] }} remote-as={{ peer[0] }} \
